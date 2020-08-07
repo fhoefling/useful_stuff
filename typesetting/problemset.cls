@@ -24,8 +24,7 @@
 \RequirePackage[german,english]{babel}
 \RequirePackage{scrpage2}
 \RequirePackage{graphicx}
-\RequirePackage{psfrag,wrapfig,mdwtab,alphalph,enumitem,textcomp}
-\RequirePackage{siunitx}
+\RequirePackage{psfrag,wrapfig,mdwtab,alphalph,enumitem}
 \RequirePackage{url} \urlstyle{same}
 % setup fonts
 \RequirePackage{cmap} % make ligatures etc. copy- and searchable
@@ -36,14 +35,13 @@
 \if@prblmst@mtpro
   \RequirePackage{times}
   \RequirePackage[scaled=.92]{helvet}
-  \RequirePackage[mtphrb,mtpcal,mtpfrak,subscriptcorrection,slantedGreek,zswash,amssymbols]{mtpro2}
+  \RequirePackage[mtphrb,mtpcal,mtpfrak,subscriptcorrection,compatiblegreek,slantedGreek,zswash,amssymbols]{mtpro2}
   % redefine environment pmatrix: let \PARENS enclose a matrix environment
   \def\env@pmatrix{\PARENS{\env@matrix}\def\endpmatrix{\endmatrix}}
 \else
   \RequirePackage{amssymb,eucal}
-%  \RequirePackage{txfonts}
-%  \renewcommand{\rmdefault}{ptm}
-  \RequirePackage{lmodern}
+  \RequirePackage{txfonts}
+  \renewcommand{\rmdefault}{ptm}
 \fi
 \RequirePackage[T1]{fontenc}
 % customize the exercise environment
@@ -182,7 +180,8 @@
 \newcommand\diff{\mathrm{d}}
 % print vectors as bold letters, unit vectors with a hat
 \if@prblmst@mtpro
-  \renewcommand\vec[1]{\mathrm{\boldsymbol #1}}
+%  \renewcommand\vec[1]{\mathrm{\boldsymbol #1}}
+  \renewcommand\vec[1]{\boldsymbol{\mathrm{#1}}} % with 'compatiblegreek'
   \newcommand\unitvec[1]{\hat{\vec{#1}}}
 \else
   \renewcommand\vec[1]{\boldsymbol{\mathrm{#1}}}
