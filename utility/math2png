@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# Copyright © 2014 Felix Höfling
+#
+# convert Tex math string to PNG
+#
+
+if [ $# -lt 2 ]
+then
+    echo Usage: $(basename $0) jobname [density] [font] tex-math-string
+    exit 1
+fi
+
+JOBNAME=$1; shift 1
+
+if [ $# -ge 2 ]; then DENSITY=$1; shift 1; fi
+if [ $# -ge 2 ]; then FONT=$1; shift 1; fi
+
+TMPDIR="$(mktemp -d --tmpdir $(basename $0).XXXXXXXX)"
+INPUT="$TMPDIR/$JOBNAME.tex"
+
+if [ -z "$TMPDIR" ]
+then
+    exit 2
+fi
+
+cat >"$INPUT" <<EOF
+\documentclass[convert={density=${DENSITY:-100},outext=.png},border=1pt,varwidth]{standalone}
+\usepackage{amsmath,amssymb}
+\usepackage{${FONT:-txfonts}}
+\usepackage{varwidth}
+\begin{document}
+\[ $@ \]
+\end{document}
+EOF
+
+CURDIR="$PWD"
+cd "$TMPDIR"
+
+pdflatex -shell-escape -halt-on-error "$INPUT" 2>&1 >/dev/null && mv $(basename "$INPUT" .tex).png "$CURDIR"
+
+cd "$CURDIR"
+rm -r "$TMPDIR"
+
