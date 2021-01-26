@@ -1,5 +1,5 @@
 This is a collection of scripts, templates, and examples, which emerged over the
-years and which somebody else may find useful. THe material is distributed under
+years and which somebody else may find useful. The material is distributed under
 a BSD 2-clause licence.
 
 # Plotting with ``matplotlib``
