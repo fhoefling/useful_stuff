@@ -22,6 +22,10 @@ a BSD 2-clause licence.
   - **problemset.cls**  
     A class to typeset problem sheets, elaborating on the *exercises* package by Roger Jud.
 
+  - **IOP style for RevTeX 4.1**  
+    An extension to RevTeX 4.1 to typeset manuscripts for IOP journals such as
+    the New Journal of Physics.
+
 # Utilities
 
   - **math2png**  

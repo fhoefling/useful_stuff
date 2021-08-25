@@ -1,0 +1,559 @@
+%%
+%% This is file `iop4-1.rtx',
+%%
+%% Adapted from aip4-1.rtx, which is part of the RevTeX4 package
+%%
+%% Copyright (c) 2009 The American Physical Society.
+%% http://publish.aps.org/revtex4/
+%% mailto:revtex4@aps.org
+%%
+%% See the REVTeX 4 README file for restrictions and more information.
+%%
+\NeedsTeXFormat{LaTeX2e}[1996/12/01]%
+\ProvidesFile{iop4-1.rtx}%
+\ifx\undefined\substyle@ext
+ \def\@tempa{%
+  \endinput
+  \GenericWarning{I must be read in by REVTeX! (Bailing out)}%
+ }%
+ \expandafter\else
+  \def\@tempa{}%
+ \expandafter\fi\@tempa
+ \class@info{RevTeX society IOP selected}%
+\DeclareOption{njp}{\change@journal{njp}}%
+\DeclareOption{rpp}{\change@journal{rpp}}%
+\DeclareOption{article-title}{%
+  \@booleanfalse\iop@jtitx@sw
+}%
+\@booleantrue\iop@jtitx@sw
+\appdef\@bibdataout@rev{\@bibdataout@iop}%
+\def\@bibdataout@iop{%
+ \immediate\write\@bibdataout{%
+  @CONTROL{%
+   iop41Control%
+   \longbibliography@sw{\true@sw}{\iop@jtitx@sw{\false@sw}{\true@sw}}%
+   {%
+    ,pages="0",title="0"%
+   }{%
+    ,pages="0",title=""%
+   }%
+  }%
+ }%
+ \if@filesw
+  \immediate\write\@auxout{\string\citation{iop41Control}}%
+ \fi
+}%
+\appdef\rtx@require@packages{%
+ % page layout
+ \RequirePackage[text={7.0in,8.9in}]{geometry}%
+}%
+\@booleantrue\preprintsty@sw
+\@booleantrue\showPACS@sw
+\@booleantrue\showKEYS@sw
+\appdef\setup@hook{%
+ \preprintsty@sw{%
+  \ps@preprint
+ }{%
+  \ps@article
+ }%
+}%
+\def\ps@preprint{%
+  \def\@oddhead{\@runningtitle\hfil}%
+  \def\@evenhead{\@runningtitle\hfil}%
+  \def\@oddfoot{\hfil\thepage\quad\checkindate\hfil}%
+  \def\@evenfoot{\hfil\thepage\quad\checkindate\hfil}%
+  \let\@mkboth\markboth
+  \let\sectionmark\@gobble
+  \let\subsectionmark\@gobble
+}%
+\def\ps@article{%
+  \def\@evenhead{\let\\\heading@cr\thepage\quad\checkindate\hfil\@runningtitle}%
+  \def\@oddhead{\let\\\heading@cr\@runningtitle\hfil\checkindate\quad\thepage}%
+  \def\@oddfoot{}%
+  \def\@evenfoot{}%
+  \let\@mkboth\markboth
+  \let\sectionmark\@gobble
+  \let\subsectionmark\@gobble
+}%
+\def\@runningtitle{\itshape\@shorttitle}%
+\renewenvironment{titlepage}{%
+  \let\wastwocol@sw\twocolumn@sw
+  \onecolumngrid
+  \newpage
+  \thispagestyle{titlepage}%
+  \c@page\z@% article sets this to one not zero???
+}{%
+  \wastwocol@sw{\twocolumngrid}{\newpage}%
+}%
+\let\@fnsymbol@latex\@fnsymbol
+\let\@fnsymbol\@alph
+\def\iop@frontmatter@indent{\z@}
+\def\adjust@abstractwidth{%
+ \parindent1em\relax
+ \advance\leftskip\iop@frontmatter@indent\relax
+ \@totalleftmargin\leftskip
+ \@afterheading\@afterindentfalse
+}%
+\def\frontmatter@abstractheading{
+ {\parindent=\iop@frontmatter@indent\rmfamily\bfseries\abstractname\par}%
+}%
+\def\frontmatter@abstractfont{%
+ \adjust@abstractwidth
+}%
+\appdef\setup@hook{%
+ \preprintsty@sw{%
+  \@booleantrue\titlepage@sw
+%   \let\section\section@preprintsty
+%   \let\subsection\subsection@preprintsty
+%   \let\subsubsection\subsubsection@preprintsty
+ }{}%
+}%
+\def\frontmatter@@indent{%
+ \skip@\@flushglue
+ \@flushglue\z@ plus.3\hsize\relax
+ \raggedright
+ \advance\leftskip\iop@frontmatter@indent\relax
+ \@totalleftmargin\leftskip
+ \@flushglue\skip@
+}%
+\def\frontmatter@authorformat{%
+ \frontmatter@@indent
+ \rmfamily
+ \bfseries
+}%
+\renewcommand*\email[1][Electronic mail: ]{\begingroup\sanitize@url\@email{#1}}%
+\def\frontmatter@above@affilgroup{%
+}%
+\def\frontmatter@above@affiliation@script{%
+ \frontmatter@@indent
+ \addvspace{1.5pc}%
+}%
+\def\frontmatter@above@affiliation{%
+ \addvspace{1.5pc}%
+}%
+\def\frontmatter@affiliationfont{%
+ \frontmatter@@indent
+ \preprintsty@sw{}{\small}%
+}%
+\def\frontmatter@collaboration@above{%
+}%
+\def\frontmatter@setup{%
+ \normalfont
+}%
+\def\frontmatter@title@above{\addvspace{6\p@}}%
+\def\frontmatter@title@format{%
+ \preprintsty@sw{}{\huge}%
+ \rmfamily
+ \bfseries
+ \raggedright
+ \parskip\z@skip\noindent
+}%
+\def\@author@parskip{3\p@}%
+\@booleantrue\altaffilletter@sw
+\def\frontmatter@makefnmark{%
+ \@textsuperscript{%
+  \normalfont\@thefnmark\space%
+ }%
+}%
+\def\frontmatter@authorbelow{%
+\addvspace{1.5pc}%
+}%
+\let\affil@cutoff\tw@
+\def\frontmatter@RRAP@format{%
+ \addvspace{5\p@}%
+ \small
+ \raggedright
+ \advance\leftskip\iop@frontmatter@indent\relax
+ \@totalleftmargin\leftskip
+ \expandafter\produce@RRAP\expandafter{\@submitted}%
+}%
+\def\Submitted@name{Submitted to: }%
+\def\@submitted{%
+ \@ifx@empty\@journal{}{%
+  \Submitted@name\itshape\expandafter\csname\@journal\endcsname%
+ }%
+}%
+\def\frontmatter@PACS@format{%
+   \addvspace{11\p@}%
+   \adjust@abstractwidth
+   \parskip\z@skip
+   \samepage
+}%
+\def\frontmatter@keys@format{%
+   \adjust@abstractwidth
+   \samepage
+}%
+\def\ps@titlepage{%
+  \let\@oddfoot\@empty\let\@evenfoot\@empty
+  \def\@oddhead{\hfill\produce@preprints\@preprint}
+  \let\@evenhead\@oddhead
+  \let\@mkboth\@gobbletwo
+  \let\sectionmark\@gobble
+  \let\subsectionmark\@gobble
+}%
+\def\byrevtex{\byrevtex@sw{Typeset by REV\TeX}{}}%
+\def\produce@preprints#1{%
+ \preprint@sw{%
+  \vtop to \z@{%
+   \def\baselinestretch{1}%
+   \small
+   \let\preprint\preprint@count
+   \count@\z@#1\@ifnum{\count@>\tw@}{%
+    \hbox{%
+     \let\preprint\preprint@hlist
+     #1\setbox\z@\lastbox
+    }%
+   }{%
+    \let\preprint\preprint@cr
+    \halign{\hfil##\cr#1\crcr}%
+    \par
+    \vss
+   }%
+  }%
+ }{}%
+}%
+\def\preprint@cr#1{#1\cr}%
+\def\preprint@count#1{\advance\count@\@ne}%
+\def\preprint@hlist#1{#1\hbox{, }}%
+\newenvironment{Lead@inParagraph}{%
+ \par
+ \bfseries
+ \@afterheading\@afterindentfalse
+}{%
+ \par
+ \hb@xt@\hsize{\hfil\leaders\hrule\hfil\leaders\hrule\hfil\hfil}%
+}%
+\appdef\frontmatter@init{%
+ \let@environment{quotation@ltx}{quotation}%
+ \let@environment{quotation}{Lead@inParagraph}%
+}%
+\appdef\@startsection@hook{%
+ \let@environment{quotation}{quotation@ltx}%
+}%
+\let\frontmatter@footnote@produce\frontmatter@footnote@produce@footnote
+\setcounter{secnumdepth}{3}
+\newcommand\thesection       {\arabic{section}}
+\newcommand\thesubsection    {\thesection.\arabic{subsection}}
+\newcommand\thesubsubsection {\thesubsection.\arabic{subsubsection}}
+\newcommand\theparagraph     {\thesubsubsection.\arabic{paragraph}}
+\newcommand\thesubparagraph  {\theparagraph.\arabic{subparagraph}}
+\def\@seccntformat#1{\csname the#1\endcsname.\quad}%
+\def\@hang@from#1#2#3{#1#2#3}%
+\def\section{%
+  \@startsection {section}{1}{\z@}%
+  {-3.5ex \@plus -1ex \@minus -.2ex}%
+  {2.3ex \@plus.2ex}%
+  {\reset@font\normalsize\bfseries\raggedright}%
+}%
+\def\subsection{%
+  \@startsection{subsection}{2}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1.5ex \@plus .2ex}%
+  {\reset@font\normalsize\itshape\raggedright}%
+}%
+\def\subsubsection{%
+  \@startsection{subsubsection}{3}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1ex \@plus .2em}%
+  {\reset@font\normalsize\itshape}%
+}%
+\def\paragraph{%
+  \@startsection{paragraph}{4}{\z@}%
+  {3.25ex \@plus1ex \@minus.2ex}%
+  {1ex}%
+  {\reset@font\normalsize\itshape}%
+}%
+\def\subparagraph{%
+  \@startsection{subparagraph}{5}{\parindent}%
+  {3.25ex \@plus1ex \@minus .2ex}%
+  {1ex}%
+  {\reset@font\normalsize\itshape}%
+}%
+\appdef\setup@hook{%
+ \setlength\leftmargini{2em}%
+ \setlength\leftmarginii{2em}%
+ \setlength\leftmarginiii{1.8em}%
+ \setlength\leftmarginiv{1.6em}%
+ \setlength\leftmarginv{1em}%
+ \setlength\leftmarginvi{1em}%
+ \setlength\leftmargin{\leftmargini}%
+ \setlength\labelsep{0.5em}%
+ \setlength\labelwidth{\leftmargini}%
+ \addtolength\labelwidth{-\labelsep}%
+ \setlength\columnsep{10\p@}%
+ \setlength\columnseprule{0\p@}%
+}%
+\renewcommand\theenumi{\roman{enumi}}%
+\renewcommand\theenumii{\alph{enumii}}%
+\renewcommand\theenumiii{\arabic{enumiii}}%
+\renewcommand\theenumiv{\Alph{enumiv}}%
+\renewcommand\labelenumi{(\theenumi)}%
+\renewcommand\labelenumii{(\theenumii)}%
+\renewcommand\labelenumiii{\theenumiii.}%
+\renewcommand\labelenumiv{(\theenumiv)}%
+\renewcommand\p@enumii{(\theenumi)}%
+\renewcommand\p@enumiii{(\theenumi.\theenumii)}%
+\renewcommand\p@enumiv{(\theenumi.\theenumii.\theenumiii)}%
+\renewcommand\labelitemi{$\m@th\bullet$}%
+\renewcommand\labelitemii{\normalfont\bfseries --}%
+\renewcommand\labelitemiii{$\m@th\ast$}%
+\renewcommand\labelitemiv{$\m@th\cdot$}%
+\renewenvironment{description}%
+ {\list{}{\labelwidth\z@ \itemindent-\leftmargin%
+          \let\makelabel\descriptionlabel}}%
+ {\endlist}%
+\def\descriptionlabel#1{%
+ \hspace\labelsep%
+ \normalfont\bfseries #1}%
+\def\@pnumwidth{1.55em}
+\def\@tocrmarg {2.55em}
+\def\@dotsep{2}
+\def\ltxu@dotsep{4.5pt}
+\def\toc@@font{%
+ \preprintsty@sw{}{%
+  \small%
+  \def\\{\space\ignorespaces}%
+ }%
+}%
+\def\tocleft@{\z@}%
+\def\tocdim@min{5\p@}%
+\setcounter{tocdepth}{2}
+\def\tableofcontents{%
+ \toc@heading%
+ \@starttoc{toc}%
+ \toc@footing%
+}%
+\def\toc@heading{%
+ \onecolumngrid@push
+ \hrule
+ \addtocontents{toc}{\string\tocdepth@munge}%
+ \section*{\tocname}
+ \addtocontents{toc}{\string\tocdepth@restore}%
+ \onecolumngrid@pop
+}%
+\def\toc@footing{%
+ \onecolumngrid@push
+ \addvspace{1pc}\hrule\addvspace{1.5pc}
+ \onecolumngrid@pop
+}%
+\def\tocdepth@munge{%
+  \let\l@section@saved\l@section
+  \let\l@section\@gobble@tw@
+}%
+\def\@gobble@tw@#1#2{}%
+\def\tocdepth@restore{%
+  \let\l@section\l@section@saved
+}%
+\def\l@part#1#2{\addpenalty{\@secpenalty}%
+ \begingroup
+  \set@tocdim@pagenum{#2}%
+  \parindent \z@
+  \rightskip\tocleft@pagenum plus 1fil\relax
+  \skip@\parfillskip\parfillskip\z@
+  \addvspace{2.25em plus\p@}%
+  \large \bf %
+  \leavevmode\ignorespaces#1\unskip\nobreak\hskip\skip@
+  \hb@xt@\rightskip{\hfil\unhbox\z@}\hskip-\rightskip\hskip\z@skip
+  \par
+  \nobreak %
+ \endgroup
+}%
+\def\tocleft@{\z@}%
+\def\tocdim@min{5\p@}%
+\def\l@section{%
+ \l@@sections{}{section}% Implicit #3#4
+}%
+\def\l@f@section{%
+ \addpenalty{\@secpenalty}%
+ \addvspace{1.0em plus\p@}%
+ \bf
+}%
+\def\l@subsection{%
+ \l@@sections{section}{subsection}% Implicit #3#4
+}%
+\def\l@subsubsection#1#2{}%
+\def\l@paragraph#1#2{}%
+\def\l@subparagraph#1#2{}%
+\let\toc@pre\toc@pre@auto
+\let\toc@post\toc@post@auto
+\def\listoffigures{\print@toc{lof}}%
+\def\l@figure{\@dottedtocline{1}{1.5em}{2.3em}}
+\def\listoftables{\print@toc{lot}}%
+\let\l@table\l@figure
+\@booleanfalse\raggedcolumn@sw
+\def\tableft@skip@float{\z@ plus\hsize}%
+\def\tabmid@skip@float{\@flushglue}%
+\def\tabright@skip@float{\z@ plus\hsize}%
+\def\array@row@pre@float{\hline\hline\noalign{\vskip\doublerulesep}}%
+\def\array@row@pst@float{\noalign{\vskip\doublerulesep}\hline\hline}%
+\def\@makefntext#1{%
+ \def\baselinestretch{1}%
+ \leftskip1em%
+ \parindent1em%
+ \noindent
+ \nobreak\hskip-\leftskip
+ \hb@xt@\leftskip{%
+  \hss\@makefnmark\ %
+ }%
+ #1%
+ \par
+}%
+\prepdef\appendix{%
+ \par
+ \let\@hangfrom@section\@hangfrom@appendix
+ \let\@sectioncntformat\@appendixcntformat
+}%
+\def\@hangfrom@appendix#1#2#3{%
+ #1%
+ \@if@empty{#2}{%
+  #3%
+ }{%
+  #2\@if@empty{#3}{}{:\ #3}%
+ }%
+}%
+\def\@hangfroms@appendix#1#2{%
+ #1#2%
+}%
+\def\@appendixcntformat#1{\appendixname\ \csname the#1\endcsname}%
+\def\pre@bibdata{\jobname\bibdata@app}%
+\def\refname{References}%
+\appdef\setup@hook{%
+ \let\bibpreamble\@empty
+ \bibsep\z@\relax
+ \def\newblock{\ }%
+}%
+\appdef\setup@hook{%
+ \def\bibfont{%
+ \preprintsty@sw{}{\small}%
+ \@clubpenalty\clubpenalty
+ }%
+}%
+\newenvironment{theindex}{%
+ \let\wastwocol@sw\twocolumn@sw
+ \columnseprule \z@
+ \columnsep 35\p@
+ \c@secnumdepth-\maxdimen
+ \onecolumngrid@push
+ \section{\indexname}%
+ \@mkboth{\uppercase{\indexname}}%
+  {\uppercase{\indexname}}%
+ \thispagestyle{plain}%
+ \parindent\z@
+ \parskip\z@ plus.3\p@\relax
+ \let\item\@idxitem
+ \onecolumngrid@pop
+}{%
+ \wastwocol@sw{\clearpage}{\onecolumngrid}%
+}%
+\def\@idxitem{\par\hangindent 40\p@}
+\def\subitem{\par\hangindent 40\p@ \hspace*{20\p@}}
+\def\subsubitem{\par\hangindent 40\p@ \hspace*{30\p@}}
+\def\indexspace{\par \vskip 10\p@ plus5\p@ minus3\p@\relax}
+\def\figurename{Figure}
+\def\tablename{Table}
+\expandafter\def\csname rtx@iop10pt\endcsname{%
+ \let\@currname@class\@currname
+ \def\@currname{iop10pt\substyle@post}%
+ \class@info{Reading file \@currname.\substyle@ext}%
+ \input{\@currname.\substyle@ext}%
+ \let\@currname\@currname@class
+ \class@info{Overriding 10pt}%
+ \iopreprint
+}%
+\expandafter\def\csname rtx@iop11pt\endcsname{\csname rtx@iop12pt\endcsname}%
+\expandafter\def\csname rtx@iop12pt\endcsname{%
+ \let\@currname@class\@currname
+ \def\@currname{iop12pt\substyle@post}%
+ \class@info{Reading file \@currname.\substyle@ext}%
+ \input{\@currname.\substyle@ext}%
+ \let\@currname\@currname@class
+ \class@info{Overriding 12pt}%
+ \ioppreprint
+}%
+\def\today{%
+  \number\day\space
+  \ifcase\month
+   \or January\or February\or March\or     April\or   May\or      June%
+   \or July\or    August\or   September\or October\or November\or December%
+  \fi\space
+  \number\year
+}%
+\clo@superscriptaddress
+\def\@journal@default{njp}%
+\def\@pointsize@default{10}%
+\def\rtx@iopnjp{%
+ \typeout{Using journal substyle \@journal.}%
+ \@booleantrue\authoryear@sw
+ \@booleanfalse\eprint@enable@sw
+ \@booleanfalse\twocolumn@sw % appears to be ignored
+ \PassOptionsToClass{a4paper,onecolumn}{revtex4-1}%
+ \appdef\setup@hook{%
+   \preprintsty@sw{}{%
+     \setlength\hoffset{15mm}
+     \setlength\textwidth{150mm}
+   }%
+ }%
+ \def\frontmatter@title@format{%
+  \preprintsty@sw{\bfseries}{\huge\sffamily}%
+  \raggedright
+  \parskip\z@skip\noindent
+ }%
+ \def\frontmatter@title@below{%
+  \addvspace{1.5pc}%
+  \bgroup%
+  \preprintsty@sw{}{\normalsize\bfseries}%
+  \parindent=\iop@frontmatter@indent
+  PAPER\par
+  \egroup%
+  \addvspace{1.5pc}%
+ }%
+}%
+\def\rtx@ioprpp{%
+ \typeout{Using journal substyle \@journal.}%
+ \@booleantrue\authoryear@sw
+ \@booleanfalse\eprint@enable@sw
+ \def\frontmatter@title@below{%
+  \addvspace{1.5pc}%
+  \bgroup%
+  \preprintsty@sw{}{\large\bfseries}%
+  \parindent=\iop@frontmatter@indent
+  REVIEW ARTICLE\par
+  \egroup%
+  \addvspace{1.5pc}%
+ }%
+}%
+% % template
+% \def\rtx@iopXXX{%
+%  \typeout{Using journal substyle \@journal.}%
+%  \@booleanfalse\authoryear@sw
+%  \@booleanfalse\iop@jtitx@sw
+%  \@booleanfalse\twocolumn@sw
+%  \let\@runningtitle\@empty
+% }%
+\def\njp{New.\ J.\ Phys.}%
+\def\rpp{Rep.\ Prog.\ Phys.}%
+% \def\XXX{Abbrev.\ Name}%
+\appdef\setup@hook{%
+  \bibpunct{[}{]}{,}{n}{}{,}%
+  \iop@jtitx@sw{%
+    \def\@bibstyle{aipnum\substyle@post}%
+  }{%
+    \def\@bibstyle{aipnum\substyle@post}%
+  }%
+  \let\place@bibnumber\place@bibnumber@inl
+}%
+\def\iopreprint{%
+}%
+\def\ioppreprint{%
+}%
+\appdef\setup@hook{%
+ \@ifx{\place@bibnumber\place@bibnumber@sup}{%
+  \footinbib@sw{}{%
+   \class@warn{Citations are superscript numbers: footnotes must be endnotes; changing to that configuration}%
+   \@booleantrue\footinbib@sw
+  }%
+ }{}%
+}%
+\endinput
+%%
+%% End of file `iop4-1.rtx'.
