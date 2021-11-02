@@ -28,8 +28,8 @@ def set_plot_defaults():
 #        r'\usepackage{txfonts}', # alternative if MathTimePro II fonts are not installed
 #        r'\usepackage{lmodern}',  # another alternative font family
         ))
-    rc('legend', frameon=False, numpoints=1, fontsize=9,
-        labelspacing=0.2, handlelength=2, handletextpad=0.5, borderaxespad=0.5)
+    rc('legend', frameon=False, numpoints=1, fontsize='small',
+        labelspacing=0.2, handlelength=1, handletextpad=0.5, borderaxespad=0.5)
     rc('figure', figsize=(3.4, 2.4))  # gnuplot standard is (5, 3.5)
     rc('axes', linewidth=.7,
         prop_cycle=cycler(color=LondonUnderground_Colours.color_cycle))
