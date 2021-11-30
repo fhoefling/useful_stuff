@@ -24,7 +24,8 @@
 \RequirePackage[german,english]{babel}
 \RequirePackage{scrpage2}
 \RequirePackage{graphicx}
-\RequirePackage{psfrag,wrapfig,mdwtab,alphalph,enumitem}
+\RequirePackage{psfrag,wrapfig,mdwtab,alphalph}
+\RequirePackage[inline]{enumitem}
 \RequirePackage{url} \urlstyle{same}
 % setup fonts
 \RequirePackage{cmap} % make ligatures etc. copy- and searchable
