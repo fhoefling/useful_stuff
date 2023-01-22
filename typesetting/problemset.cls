@@ -1,5 +1,5 @@
 %
-% Copyright © 2007–2013  Felix Höfling
+% Copyright © 2007–2023  Felix Höfling
 %
 \NeedsTeXFormat{LaTeX2e}[1996/12/01]
 \ProvidesClass{problemset}[2013/10/15 v1.9 a class for problemsets]
@@ -53,10 +53,16 @@
 \fi
 \RequirePackage[T1]{fontenc}
 % customize the exercise environment
-\newenvironment{tutorial}[1][]{\setcounter{points}{0}\begin{Exercise}[name={Tutorial},#1]}%
-  {\addtocounter{totalpoints}{\value{points}}\prblmst@write@points\end{Exercise}}
-\newenvironment{problem}[1][]{\setcounter{points}{0}\begin{Exercise}[#1]}%
-  {\addtocounter{totalpoints}{\value{points}}\prblmst@write@points\end{Exercise}}
+\newenvironment{tutorial}[1][]{\setcounter{points}{0}%
+  \setcounter{extrapoints}{0}\begin{Exercise}[name={Tutorial},#1]%
+}{\addtocounter{totalpoints}{\value{points}}%
+  \addtocounter{totalextrapoints}{\value{extrapoints}}%
+  \prblmst@write@points\end{Exercise}}
+\newenvironment{problem}[1][]{\setcounter{points}{0}%
+  \setcounter{extrapoints}{0}\begin{Exercise}[#1]%
+}{\addtocounter{totalpoints}{\value{points}}%
+  \addtocounter{totalextrapoints}{\value{extrapoints}}%
+  \prblmst@write@points\end{Exercise}}
 \newenvironment{solution}[1][]{\begin{Answer}[#1]}{\end{Answer}}
 \newcommand\question[1][]{\Question[#1]\parindent=1em} % restore parindent
 \newcommand\subquestion[1][]{\subQuestion[#1]\parindent=1em} % restore parindent
@@ -121,14 +127,15 @@
 \newcounter{totalpoints}
 \newcommand\points[1]{\addtocounter{points}{#1}%
   \linebreak[3]\llap{}\hfill\mbox{\bfseries\footnotesize(\prblmst@print@points{#1})}\ignorespaces}
-%
-\newcommand\prblmst@print@points[1]{%
-  \ifnum#1>0 #1~\ifnum#1=1 \PointName\else\PointsName\fi\fi}
-\def\prblmst@write@points{\immediate\write\@auxout{\string\newlabel{points@\theExercise}{{\arabic{points}}{\thepage}}}}
-\def\@setref@points#1#2#3{%
-  \ifx#1\relax\z@\else\expandafter#2#1\fi}
-\def\ref@points#1{\expandafter\@setref@points\csname r@points@#1\endcsname\@firstoftwo{points@#1}}
-%mbox
+% specifiy extra points
+\newcounter{extrapoints}
+\newcounter{totalextrapoints}
+\newcommand\extrapoints[1]{\addtocounter{extrapoints}{#1}%
+  \linebreak[3]\llap{}\hfill\mbox{\bfseries\footnotesize(\prblmst@print@points[#1]{0})}\ignorespaces}
+% print points, the optional argument #1 is for extra points
+\newcommand\prblmst@print@points[2][0]{%
+  \ifnum#2>0 #2\ifnum#1=0~\ifnum#2=1\PointName\else\PointsName\fi\else\,+\,#1~\PointsName\fi%
+  \else\ifnum#1>0 #1~\ifnum#1=1\ExtraPointName\else\ExtraPointsName\fi\fi\fi}
 \def\PointName{point}
 \def\PointsName{points}
 \@ifpackageloaded{babel}{
@@ -136,6 +143,24 @@
   \def\PointName{Punkt}
   \def\PointsName{Punkte}
 }}{}
+\def\ExtraPointName{bonus point}
+\def\ExtraPointsName{bonus points}
+\@ifpackageloaded{babel}{
+\addto{\captionsgerman}{
+  \def\ExtraPointName{Zusatzpunkt}
+  \def\ExtraPointsName{Zusatzpunkte}
+}}{}
+% write accumulated points per exercise to aux file
+\def\prblmst@write@points{%
+  \immediate\write\@auxout{\string\newlabel{points@\theExercise}{{\arabic{points}}{\thepage}}}%
+  \immediate\write\@auxout{\string\newlabel{extrapoints@\theExercise}{{\arabic{extrapoints}}{\thepage}}}}
+\def\@setref@points#1#2#3{%
+  \ifx#1\relax\z@\else\expandafter#2#1\fi}
+\def\@setref@extrapoints#1#2#3{%
+  \ifx#1\relax\z@\else\expandafter#2#1\fi}
+\def\ref@points#1{\expandafter\@setref@points\csname r@points@#1\endcsname\@firstoftwo{points@#1}}
+\def\ref@extrapoints#1{\expandafter\@setref@extrapoints\csname r@extrapoints@#1\endcsname\@firstoftwo{extrapoints@#1}}
+%mbox
 %
 \AtBeginDocument{\if@ExerciseOutput\maketitle\fi}
 \AtEndDocument{\if@ExerciseOutput\ifx\@duedate\empty\else\par\vfill{\slshape\noindent\DueDateName: \@duedate}\fi\fi%
@@ -148,7 +173,8 @@
 \renewcommand{\ExerciseHeader}{\subsection*{\ExerciseName~%
   \ExerciseHeaderNB\ExerciseHeaderDifficulty\normalfont\textsl{\ExerciseHeaderTitle%
   \if\ExerciseOrigin\empty\else\ExerciseHeaderOrigin\fi%
-  \ifnum\ref@points{\theExercise}>0 \hfill(\prblmst@print@points{\ref@points{\theExercise}})\fi}}}
+  % converting points as dimensions allows us to add them up
+  \ifdim\dimexpr\ref@points{\theExercise}pt+\ref@extrapoints{\theExercise}pt>\z@ \hfill(\prblmst@print@points[\ref@extrapoints{\theExercise}]{\ref@points{\theExercise}})\fi}}}
 \renewcommand{\AnswerHeader}{\subsection*{\AnswerName~%
   \ExerciseHeaderNB\ExerciseHeaderDifficulty\normalfont\textsl{\ExerciseHeaderTitle%
   \if\ExerciseOrigin\empty\else\ExerciseHeaderOrigin\fi}}}
