@@ -6,7 +6,7 @@
 %
 \DeclareOption{a4paper}{\PassOptionsToClass{\CurrentOption}{scrartcl}}
 \DeclareOption{11pt}{\PassOptionsToClass{\CurrentOption}{scrartcl}}
-\DeclareOption{DIV12}{\PassOptionsToClass{\CurrentOption}{scrartcl}}
+\DeclareOption{DIV=12}{\PassOptionsToClass{\CurrentOption}{scrartcl}}
 \DeclareOption{twoside}{\PassOptionsToClass{\CurrentOption}{scrartcl}}
 \DeclareOption{answerdelayed}{\PassOptionsToPackage{\CurrentOption}{exercise}}
 \DeclareOption{lastexercise}{\PassOptionsToPackage{\CurrentOption}{exercise}}
@@ -14,19 +14,26 @@
 \DeclareOption{english}{\PassOptionsToPackage{main=\CurrentOption}{babel}\AtEndOfClass{\main@language{english}}}
 \newif\if@prblmst@mtpro\@prblmst@mtprofalse
 \DeclareOption{mtpro2}{\@prblmst@mtprotrue}
+\newif\if@prblmst@hyperref\@prblmst@hyperreffalse
+\DeclareOption{hyperref}{\@prblmst@hyperreftrue}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrartcl}%
 \PassOptionsToPackage{\CurrentOption}{exercise,graphicx}}
-\ExecuteOptions{a4paper,11pt,DIV12,answerdelayed,lastexercise}
+\ExecuteOptions{a4paper,11pt,DIV=12,answerdelayed,lastexercise}
 \ProcessOptions\relax
 \LoadClass{scrartcl}
 \RequirePackage{exercise}
 %
 \RequirePackage[german,english]{babel}
-\RequirePackage{scrpage2}
+\RequirePackage{scrlayer-scrpage}
 \RequirePackage{graphicx}
 \RequirePackage{psfrag,wrapfig,mdwtab,alphalph}
 \RequirePackage[inline]{enumitem}
 \RequirePackage{url} \urlstyle{same}
+\if@prblmst@hyperref
+  \RequirePackage{hyperref}
+  \RequirePackage[dvipsnames]{xcolor}
+  \hypersetup{colorlinks=true, linkcolor=BrickRed, urlcolor=blue!50!black, citecolor=blue!50!black}
+\fi
 % setup fonts
 \RequirePackage{cmap} % make ligatures etc. copy- and searchable
 \RequirePackage{microtype}
