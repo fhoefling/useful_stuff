@@ -227,6 +227,9 @@
 \newcommand\e{\mathrm{e}}
 % imaginary unit
 \renewcommand\i{\mathrm{i}}
+% nicer comparison signs
+\renewcommand\leq{\leqslant}
+\renewcommand\geq{\geqslant}
 % real and imaginary part
 \DeclareMathOperator\Imag{Im}
 \DeclareMathOperator\Real{Re}
