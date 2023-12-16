@@ -21,6 +21,7 @@
  \expandafter\fi\@tempa
  \class@info{RevTeX society IOP selected}%
 \DeclareOption{njp}{\change@journal{njp}}%
+\DeclareOption{jphysa}{\change@journal{jphysa}}%
 \DeclareOption{rpp}{\change@journal{rpp}}%
 \DeclareOption{article-title}{%
   \@booleanfalse\iop@jtitx@sw
@@ -317,7 +318,7 @@
 }%
 \def\tocleft@{\z@}%
 \def\tocdim@min{5\p@}%
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{3}
 \def\tableofcontents{%
  \toc@heading%
  \@starttoc{toc}%
@@ -508,6 +509,28 @@
   \addvspace{1.5pc}%
  }%
 }%
+\def\rtx@iopjphysa{%
+ \typeout{Using journal substyle \@journal.}%
+ \@booleantrue\authoryear@sw
+ \@booleanfalse\eprint@enable@sw
+ \@booleanfalse\twocolumn@sw % appears to be ignored
+ \PassOptionsToClass{a4paper,onecolumn}{revtex4-1}%
+ \appdef\setup@hook{%
+   \preprintsty@sw{}{%
+     \setlength\hoffset{1.75cm}
+     \setlength\textwidth{13cm}
+   }%
+ }%
+ \def\frontmatter@title@below{%
+  \addvspace{1.5pc}%
+%  \bgroup%
+%  \preprintsty@sw{}{\large\bfseries}%
+%  \parindent=\iop@frontmatter@indent
+%  Topical Review\par
+%  \egroup%
+%  \addvspace{1.5pc}%
+ }%
+}%
 \def\rtx@ioprpp{%
  \typeout{Using journal substyle \@journal.}%
  \@booleantrue\authoryear@sw
@@ -531,6 +554,7 @@
 %  \let\@runningtitle\@empty
 % }%
 \def\njp{New.\ J.\ Phys.}%
+\def\jphysa{J.\ Phys.\ A.: Math. Theor.}%
 \def\rpp{Rep.\ Prog.\ Phys.}%
 % \def\XXX{Abbrev.\ Name}%
 \appdef\setup@hook{%
